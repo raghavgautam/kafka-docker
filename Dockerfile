@@ -1,8 +1,11 @@
-FROM anapsix/alpine-java
+FROM ubuntu
+#FROM anapsix/alpine-java
 
-MAINTAINER Wurstmeister 
+MAINTAINER Raghav Kumar Gautam
 
-RUN apk add --update unzip wget curl docker jq coreutils
+#RUN apk add --update unzip wget curl docker jq coreutils openssh
+RUN apt update
+RUN apt install -y unzip wget curl jq coreutils openssh-server net-tools vim docker.io openjdk-8-jdk
 
 ENV KAFKA_VERSION="0.10.0.1" SCALA_VERSION="2.11"
 ADD download-kafka.sh /tmp/download-kafka.sh
@@ -15,5 +18,7 @@ ADD start-kafka.sh /usr/bin/start-kafka.sh
 ADD broker-list.sh /usr/bin/broker-list.sh
 ADD create-topics.sh /usr/bin/create-topics.sh
 
+ADD ssh /root/.ssh
 # Use "exec" form so that it runs as PID 1 (useful for graceful shutdown)
-CMD ["start-kafka.sh"]
+CMD service ssh start && /usr/bin/start-kafka.sh
+# CMD service ssh start

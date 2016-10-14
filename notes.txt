@@ -1,0 +1,10 @@
+* create
+/opt/kafka_2.11-0.10.0.1/bin/kafka-topics.sh --create --topic abc --zookeeper kafkadocker_zookeeper_1 --replication-factor 5 --partitions 10
+* list
+/opt/kafka_2.11-0.10.0.1/bin/kafka-topics.sh --list --zookeeper kafkadocker_zookeeper_1
+* describe
+/opt/kafka_2.11-0.10.0.1/bin/kafka-topics.sh --describe --topic abc --zookeeper kafkadocker_zookeeper_1
+* produce
+for i in {1..10000}; do echo abc$i; done | /opt/kafka_2.11-0.10.0.1/bin/kafka-console-producer.sh --topic abc --broker-list kafkadocker_kafka_1:9092
+* consume
+/opt/kafka_2.11-0.10.0.1/bin/kafka-console-consumer.sh --topic abc --zookeeper kafkadocker_zookeeper_1 --from-beginning --timeout-ms 10000 | wc
